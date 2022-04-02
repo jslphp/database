@@ -1,4 +1,6 @@
-<?php namespace Database\Connectors;
+<?php
+
+namespace Jsl\Database\Connectors;
 
 /**
  * Class ConnectionFactory
@@ -32,7 +34,7 @@ interface ConnectionFactoryInterface
      * Establish a PDO connection based on the configuration.
      *
      * @param  array $config
-     * @return \Database\Connection
+     * @return \Jsl\Database\Connection
      */
     public function make(array $config);
 }

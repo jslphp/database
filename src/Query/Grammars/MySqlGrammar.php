@@ -1,8 +1,10 @@
-<?php namespace Database\Query\Grammars;
+<?php
 
-use Database\Query\Builder;
-use Database\Query\InfileClause;
-use Database\Query\OutfileClause;
+namespace Jsl\Database\Query\Grammars;
+
+use Jsl\Database\Query\Builder;
+use Jsl\Database\Query\InfileClause;
+use Jsl\Database\Query\OutfileClause;
 
 class MySqlGrammar extends Grammar
 {
@@ -30,7 +32,7 @@ class MySqlGrammar extends Grammar
     /**
      * Compile a select query into SQL.
      *
-     * @param  \Database\Query\Builder
+     * @param  \Jsl\Database\Query\Builder
      * @return string
      */
     public function compileSelect(Builder $query)
@@ -60,7 +62,7 @@ class MySqlGrammar extends Grammar
     /**
      * Compile the lock into SQL.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  bool|string $value
      * @return string
      */
@@ -74,7 +76,7 @@ class MySqlGrammar extends Grammar
     /**
      * Compile the "group by" portions of the query.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $groups
      * @return string
      */
@@ -86,7 +88,7 @@ class MySqlGrammar extends Grammar
     /**
      * Compile an insert statement into SQL.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $values
      * @return string
      */
@@ -98,7 +100,7 @@ class MySqlGrammar extends Grammar
     /**
      * Compile an insert statement into SQL.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $values
      * @param  array $updateValues
      * @return string
@@ -115,7 +117,7 @@ class MySqlGrammar extends Grammar
     /**
      * Compile a replace statement into SQL.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $values
      * @return string
      */
@@ -167,7 +169,7 @@ class MySqlGrammar extends Grammar
     /**
      * Compile an update statement into SQL.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $values
      * @return string
      */
@@ -189,7 +191,7 @@ class MySqlGrammar extends Grammar
     /**
      * Compile a delete statement into SQL.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @return string
      */
     public function compileDelete(Builder $query)
@@ -229,8 +231,7 @@ class MySqlGrammar extends Grammar
     {
         $sqlParts = array("into $outfileClause->type '$outfileClause->file'");
 
-        if($options = $this->buildInfileOutfileOptions($outfileClause))
-        {
+        if ($options = $this->buildInfileOutfileOptions($outfileClause)) {
             $sqlParts[] = $options;
         }
 
@@ -250,20 +251,17 @@ class MySqlGrammar extends Grammar
 
         $sqlParts = array("load data {$local}infile '$infile->file' {$type}into table " . $this->wrapTable($query->from));
 
-        if($options = $this->buildInfileOutfileOptions($infile))
-        {
+        if ($options = $this->buildInfileOutfileOptions($infile)) {
             $sqlParts[] = $options;
         }
 
-        if($infile->ignoreLines)
-        {
+        if ($infile->ignoreLines) {
             $sqlParts[] = "ignore $infile->ignoreLines lines";
         }
 
         $sqlParts[] = '(' . $this->columnize($infile->columns) . ')';
 
-        if($infile->rules)
-        {
+        if ($infile->rules) {
             $sqlParts[] = 'set ' . $this->getUpdateColumns($infile->rules);
         }
 
@@ -280,8 +278,7 @@ class MySqlGrammar extends Grammar
 
         $optionally = $infile->optionallyEnclosedBy ? 'optionally ' : '';
 
-        if(isset($infile->characterSet))
-        {
+        if (isset($infile->characterSet)) {
             $sqlParts[] = "character set $infile->characterSet";
         }
 
@@ -297,12 +294,9 @@ class MySqlGrammar extends Grammar
             )
         );
 
-        foreach ($parts as $type => $components)
-        {
-            foreach($components as $property => $sql)
-            {
-                if(isset($infile->$property))
-                {
+        foreach ($parts as $type => $components) {
+            foreach ($components as $property => $sql) {
+                if (isset($infile->$property)) {
                     $sqlParts[] = trim("$type $sql '{$infile->$property}'");
 
                     $type = '';

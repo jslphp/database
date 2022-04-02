@@ -1,4 +1,6 @@
-<?php namespace Database\Exception;
+<?php
+
+namespace Jsl\Database\Exception;
 
 use PDOException;
 

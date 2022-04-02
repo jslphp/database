@@ -1,4 +1,6 @@
-<?php namespace Database;
+<?php
+
+namespace Jsl\Database;
 
 interface ConnectionResolverInterface
 {
@@ -7,7 +9,7 @@ interface ConnectionResolverInterface
      * Get a database connection instance.
      *
      * @param  string $name
-     * @return \Database\Connection
+     * @return \Jsl\Database\Connection
      */
     public function connection($name = null);
 
@@ -25,5 +27,4 @@ interface ConnectionResolverInterface
      * @return void
      */
     public function setDefaultConnection($name);
-
 }

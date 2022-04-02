@@ -1,11 +1,13 @@
-<?php namespace Database;
+<?php
 
-use Database\Exception\ExceptionHandler;
-use Database\Exception\ExceptionHandlerInterface;
-use Database\Query\Grammars\Grammar;
-use PDO;
+namespace Jsl\Database;
+
 use Closure;
 use DateTime;
+use Jsl\Database\Exception\ExceptionHandler;
+use Jsl\Database\Exception\ExceptionHandlerInterface;
+use Jsl\Database\Query\Grammars\Grammar;
+use PDO;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
 
@@ -37,7 +39,7 @@ class Connection implements ConnectionInterface
     /**
      * The query grammar implementation.
      *
-     * @var \Database\Query\Grammars\Grammar
+     * @var \Jsl\Database\Query\Grammars\Grammar
      */
     protected $queryGrammar;
 
@@ -71,7 +73,7 @@ class Connection implements ConnectionInterface
     protected $tablePrefix = '';
 
     /**
-     * @var \Database\Exception\ExceptionHandlerInterface
+     * @var \Jsl\Database\Exception\ExceptionHandlerInterface
      */
     protected $exceptionHandler;
 
@@ -98,7 +100,7 @@ class Connection implements ConnectionInterface
      * Begin a fluent query against a database table.
      *
      * @param  string $table
-     * @return \Database\Query\Builder
+     * @return \Jsl\Database\Query\Builder
      */
     public function table($table)
     {
@@ -175,7 +177,7 @@ class Connection implements ConnectionInterface
      * Get a new raw query expression.
      *
      * @param  mixed $value
-     * @return \Database\Query\Expression
+     * @return \Jsl\Database\Query\Expression
      */
     public function raw($value)
     {
@@ -351,12 +353,11 @@ class Connection implements ConnectionInterface
 
             $statement->execute($this->prepareBindings($bindings));
         }
-            // If an exception occurs when attempting to run a query, we'll call the exception handler
-            // if there is one, or throw the exception if not
+        // If an exception occurs when attempting to run a query, we'll call the exception handler
+        // if there is one, or throw the exception if not
         catch (\Exception $e) {
 
-            if($this->exceptionHandler)
-            {
+            if ($this->exceptionHandler) {
                 $this->exceptionHandler->handle($query, $this->prepareBindings($bindings), $e);
             }
 
@@ -411,9 +412,9 @@ class Connection implements ConnectionInterface
             $this->commit();
         }
 
-            // If we catch an exception, we will roll back so nothing gets messed
-            // up in the database. Then we'll re-throw the exception so it can
-            // be handled how the developer sees fit for their applications.
+        // If we catch an exception, we will roll back so nothing gets messed
+        // up in the database. Then we'll re-throw the exception so it can
+        // be handled how the developer sees fit for their applications.
         catch (\Exception $e) {
             $this->rollBack();
 
@@ -431,7 +432,7 @@ class Connection implements ConnectionInterface
     public function beginTransaction()
     {
         $this->reconnectIfMissingConnection();
-        
+
         $this->pdo->beginTransaction();
 
         return $this;
@@ -500,12 +501,9 @@ class Connection implements ConnectionInterface
     {
         if (is_callable($this->reconnector)) {
 
-            try
-            {
+            try {
                 return call_user_func($this->reconnector, $this);
-            }
-            catch(\PDOException $e)
-            {
+            } catch (\PDOException $e) {
                 $this->exceptionHandler->handle("Connection attempt", array(), $e);
             }
         }
@@ -562,8 +560,7 @@ class Connection implements ConnectionInterface
      */
     public function getReadPdo()
     {
-        if (!$this->readPdo || $this->pdo->inTransaction())
-        {
+        if (!$this->readPdo || $this->pdo->inTransaction()) {
             return $this->getPdo();
         }
 
@@ -622,7 +619,7 @@ class Connection implements ConnectionInterface
     /**
      * Get the query grammar used by the connection.
      *
-     * @return \Database\Query\Grammars\Grammar
+     * @return \Jsl\Database\Query\Grammars\Grammar
      */
     public function getQueryGrammar()
     {
@@ -632,7 +629,7 @@ class Connection implements ConnectionInterface
     /**
      * Set the query grammar used by the connection.
      *
-     * @param  \Database\Query\Grammars\Grammar
+     * @param  \Jsl\Database\Query\Grammars\Grammar
      * @return $this
      */
     public function setQueryGrammar(Query\Grammars\Grammar $grammar)
@@ -684,8 +681,7 @@ class Connection implements ConnectionInterface
     {
         $this->loggingQueries = true;
 
-        if(!$this->logger)
-        {
+        if (!$this->logger) {
             $this->logger = new QueryLogger();
         }
 

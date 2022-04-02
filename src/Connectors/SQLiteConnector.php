@@ -1,4 +1,6 @@
-<?php namespace Database\Connectors;
+<?php
+
+namespace Jsl\Database\Connectors;
 
 class SQLiteConnector extends Connector implements ConnectorInterface
 {
@@ -33,5 +35,4 @@ class SQLiteConnector extends Connector implements ConnectorInterface
 
         return $this->createConnection("sqlite:{$path}", $config, $options);
     }
-
 }

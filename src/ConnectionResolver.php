@@ -1,7 +1,9 @@
-<?php namespace Database;
+<?php
 
-use Database\Connectors\ConnectionFactory;
-use Database\Connectors\ConnectionFactoryInterface;
+namespace Jsl\Database;
+
+use Jsl\Database\Connectors\ConnectionFactory;
+use Jsl\Database\Connectors\ConnectionFactoryInterface;
 
 class ConnectionResolver implements ConnectionResolverInterface
 {
@@ -51,14 +53,13 @@ class ConnectionResolver implements ConnectionResolverInterface
      * Get a database connection instance.
      *
      * @param  string $name
-     * @return \Database\Connection
+     * @return \Jsl\Database\Connection
      */
     public function connection($name = null)
     {
         if (is_null($name)) $name = $this->getDefaultConnection();
 
-        if (!isset($this->connectionCache[$name]))
-        {
+        if (!isset($this->connectionCache[$name])) {
             $this->connectionCache[$name] = $this->newConnection($name);
         }
 
@@ -94,7 +95,7 @@ class ConnectionResolver implements ConnectionResolverInterface
     /**
      * Add a connection to the resolver.
      *
-     * Can be an instance of \Database\Connection or a valid config array, if a connection factory has been set
+     * Can be an instance of \Jsl\Database\Connection or a valid config array, if a connection factory has been set
      *
      * @param  string $name
      * @param  array $connection

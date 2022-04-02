@@ -1,4 +1,6 @@
-<?php namespace Database\Exception;
+<?php
+
+namespace Jsl\Database\Exception;
 
 class ExceptionHandler implements ExceptionHandlerInterface
 {
@@ -6,7 +8,10 @@ class ExceptionHandler implements ExceptionHandlerInterface
      * @var array
      */
     private $parameters;
-    
+
+    /**
+     * @var int|null
+     */
     private $maxQueryLength = 1000;
 
     /**
@@ -16,7 +21,7 @@ class ExceptionHandler implements ExceptionHandlerInterface
     {
         $this->parameters = $parameters;
     }
-    
+
     /**
      * @param array $maxQueryLength
      */
@@ -30,21 +35,24 @@ class ExceptionHandler implements ExceptionHandlerInterface
      * @param array $bindings
      * @param \Exception $previousException
      */
-    public function handle($query = '', array $bindings = array(), \Exception $previousException)
+    public function handle($query = '', array $bindings = array(), \Exception $previousException = null)
     {
         $parameters = $this->parameters;
 
-        if($query){
+        if ($query) {
             $sql = $this->replaceArray('\?', $bindings, $query);
-        
-            if($this->maxQueryLength && strlen($sql) > $this->maxQueryLength){
+
+            if ($this->maxQueryLength && strlen($sql) > $this->maxQueryLength) {
                 $sql = substr($sql, 0, $this->maxQueryLength);
             }
-    
+
             $parameters['SQL'] = $sql;
         }
-    
-        $message =  $previousException->getMessage() . PHP_EOL . $this->formatArrayParameters($parameters);
+
+
+        $message =  $previousException
+            ? $previousException->getMessage() . PHP_EOL . $this->formatArrayParameters($parameters)
+            : '';
 
         throw new QueryException($message, $previousException);
     }
@@ -57,8 +65,7 @@ class ExceptionHandler implements ExceptionHandlerInterface
     {
         $parameters = $this->flattenArray($parameters);
 
-        foreach($parameters as $name => $value)
-        {
+        foreach ($parameters as $name => $value) {
             $parameters[$name] = $name . ': ' . $value;
         }
 

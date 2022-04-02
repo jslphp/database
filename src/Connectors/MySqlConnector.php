@@ -1,4 +1,6 @@
-<?php namespace Database\Connectors;
+<?php
+
+namespace Jsl\Database\Connectors;
 
 class MySqlConnector extends Connector implements ConnectorInterface
 {
@@ -20,12 +22,12 @@ class MySqlConnector extends Connector implements ConnectorInterface
         // connection's behavior, and some might be specified by the developers.
         $connection = $this->createConnection($dsn, $config, $options);
 
-        $collation = $config['collation'];
+        $collation = $config['collation'] ?? 'utf8mb4_unicode_ci';
 
         // Next we will set the "names" and "collation" on the clients connections so
         // a correct character set will be used by this client. The collation also
         // is set on the server but needs to be set here on this client objects.
-        $charset = $config['charset'];
+        $charset = $config['charset'] ?? 'utf8mb4';
 
         $names = "set names '$charset'" .
             (!is_null($collation) ? " collate '$collation'" : '');
@@ -98,5 +100,4 @@ class MySqlConnector extends Connector implements ConnectorInterface
 
         return $dsn;
     }
-
 }

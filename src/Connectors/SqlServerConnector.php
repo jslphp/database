@@ -1,4 +1,6 @@
-<?php namespace Database\Connectors;
+<?php
+
+namespace Jsl\Database\Connectors;
 
 use PDO;
 
@@ -63,5 +65,4 @@ class SqlServerConnector extends Connector implements ConnectorInterface
     {
         return PDO::getAvailableDrivers();
     }
-
 }

@@ -1,4 +1,6 @@
-<?php namespace Database\Query;
+<?php
+
+namespace Jsl\Database\Query;
 
 class OutfileClause
 {
@@ -49,8 +51,7 @@ class OutfileClause
      */
     public function __construct($file, $type)
     {
-        if($file instanceof \SplFileInfo)
-        {
+        if ($file instanceof \SplFileInfo) {
             $file = $file->getPathname();
         }
 
@@ -116,5 +117,4 @@ class OutfileClause
 
         return $this;
     }
-
 }

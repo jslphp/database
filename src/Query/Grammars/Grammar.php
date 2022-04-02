@@ -1,7 +1,9 @@
-<?php namespace Database\Query\Grammars;
+<?php
 
-use Database\Query\Builder;
-use Database\Query\Expression;
+namespace Jsl\Database\Query\Grammars;
+
+use Jsl\Database\Query\Builder;
+use Jsl\Database\Query\Expression;
 
 class Grammar
 {
@@ -144,7 +146,7 @@ class Grammar
     /**
      * Get the value of a raw expression.
      *
-     * @param  \Database\Query\Expression $expression
+     * @param  \Jsl\Database\Query\Expression $expression
      * @return string
      */
     public function getValue(Expression $expression)
@@ -199,7 +201,7 @@ class Grammar
     /**
      * Compile a select query into SQL.
      *
-     * @param  \Database\Query\Builder
+     * @param  \Jsl\Database\Query\Builder
      * @return string
      */
     public function compileSelect(Builder $query)
@@ -212,7 +214,7 @@ class Grammar
     /**
      * Compile the components necessary for a select clause.
      *
-     * @param  \Database\Query\Builder
+     * @param  \Jsl\Database\Query\Builder
      * @return array
      */
     protected function compileComponents(Builder $query)
@@ -236,7 +238,7 @@ class Grammar
     /**
      * Compile an aggregated select clause.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $aggregate
      * @return string
      */
@@ -257,7 +259,7 @@ class Grammar
     /**
      * Compile the "select *" portion of the query.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $columns
      * @return string
      */
@@ -276,7 +278,7 @@ class Grammar
     /**
      * Compile the "from" portion of the query.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  string $table
      * @return string
      */
@@ -288,7 +290,7 @@ class Grammar
     /**
      * Compile the "join" portions of the query.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $joins
      * @return string
      */
@@ -348,7 +350,7 @@ class Grammar
     /**
      * Compile the "where" portions of the query.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @return string
      */
     protected function compileWheres(Builder $query)
@@ -381,7 +383,7 @@ class Grammar
     /**
      * Compile a nested where clause.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $where
      * @return string
      */
@@ -395,7 +397,7 @@ class Grammar
     /**
      * Compile a where condition with a sub-select.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $where
      * @return string
      */
@@ -409,7 +411,7 @@ class Grammar
     /**
      * Compile a basic where clause.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $where
      * @return string
      */
@@ -423,7 +425,7 @@ class Grammar
     /**
      * Compile a "between" where clause.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $where
      * @return string
      */
@@ -437,7 +439,7 @@ class Grammar
     /**
      * Compile a where exists clause.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $where
      * @return string
      */
@@ -449,7 +451,7 @@ class Grammar
     /**
      * Compile a where exists clause.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $where
      * @return string
      */
@@ -461,7 +463,7 @@ class Grammar
     /**
      * Compile a "where in" clause.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $where
      * @return string
      */
@@ -475,7 +477,7 @@ class Grammar
     /**
      * Compile a "where not in" clause.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $where
      * @return string
      */
@@ -489,7 +491,7 @@ class Grammar
     /**
      * Compile a where in sub-select clause.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $where
      * @return string
      */
@@ -503,7 +505,7 @@ class Grammar
     /**
      * Compile a where not in sub-select clause.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $where
      * @return string
      */
@@ -517,7 +519,7 @@ class Grammar
     /**
      * Compile a "where null" clause.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $where
      * @return string
      */
@@ -529,7 +531,7 @@ class Grammar
     /**
      * Compile a "where not null" clause.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $where
      * @return string
      */
@@ -541,7 +543,7 @@ class Grammar
     /**
      * Compile a "where day" clause.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $where
      * @return string
      */
@@ -553,7 +555,7 @@ class Grammar
     /**
      * Compile a "where month" clause.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $where
      * @return string
      */
@@ -565,7 +567,7 @@ class Grammar
     /**
      * Compile a "where year" clause.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $where
      * @return string
      */
@@ -578,7 +580,7 @@ class Grammar
      * Compile a date based where clause.
      *
      * @param  string $type
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $where
      * @return string
      */
@@ -592,7 +594,7 @@ class Grammar
     /**
      * Compile a raw where clause.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $where
      * @return string
      */
@@ -604,7 +606,7 @@ class Grammar
     /**
      * Compile the "group by" portions of the query.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $groups
      * @return string
      */
@@ -616,7 +618,7 @@ class Grammar
     /**
      * Compile the "having" portions of the query.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $havings
      * @return string
      */
@@ -663,24 +665,26 @@ class Grammar
     /**
      * Compile the "order by" portions of the query.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $orders
      * @return string
      */
     protected function compileOrders(Builder $query, $orders)
     {
-        return 'order by ' . implode(', ', array_map(function ($order) {
+        return 'order by ' . implode(', ', array_map(
+            function ($order) {
                 if (isset($order['sql'])) return $order['sql'];
 
                 return $this->wrap($order['column']) . ' ' . $order['direction'];
-            }
-            , $orders));
+            },
+            $orders
+        ));
     }
 
     /**
      * Compile the "limit" portions of the query.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  int $limit
      * @return string
      */
@@ -692,7 +696,7 @@ class Grammar
     /**
      * Compile the "offset" portions of the query.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  int $offset
      * @return string
      */
@@ -704,7 +708,7 @@ class Grammar
     /**
      * Compile the "union" queries attached to the main query.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @return string
      */
     protected function compileUnions(Builder $query)
@@ -734,7 +738,7 @@ class Grammar
     /**
      * Compile an insert statement into SQL.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $values
      * @return string
      */
@@ -828,7 +832,7 @@ class Grammar
     /**
      * Compile an insert statement into SQL.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $values
      * @return string
      */
@@ -840,7 +844,7 @@ class Grammar
     /**
      * Compile an insert statement into SQL.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $values
      * @return string
      */
@@ -877,7 +881,7 @@ class Grammar
     /**
      * Compile an insert and get ID statement into SQL.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $values
      * @param  string $sequence
      * @return string
@@ -890,7 +894,7 @@ class Grammar
     /**
      * Compile an update statement into SQL.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  array $values
      * @return string
      */
@@ -942,7 +946,7 @@ class Grammar
     /**
      * Compile a delete statement into SQL.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @return string
      */
     public function compileDelete(Builder $query)
@@ -957,7 +961,7 @@ class Grammar
     /**
      * Compile a truncate table statement into SQL.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @return array
      */
     public function compileTruncate(Builder $query)
@@ -968,7 +972,7 @@ class Grammar
     /**
      * Compile the lock into SQL.
      *
-     * @param  \Database\Query\Builder $query
+     * @param  \Jsl\Database\Query\Builder $query
      * @param  bool|string $value
      * @return string
      */
@@ -1009,5 +1013,4 @@ class Grammar
     {
         throw new UnsupportedGrammarException("$grammarDescription is not supported by the " . get_called_class() . " grammar driver");
     }
-
 }

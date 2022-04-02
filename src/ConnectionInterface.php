@@ -1,4 +1,6 @@
-<?php namespace Database;
+<?php
+
+namespace Jsl\Database;
 
 use Closure;
 
@@ -9,7 +11,7 @@ interface ConnectionInterface
      * Begin a fluent query against a database table.
      *
      * @param  string $table
-     * @return \Database\Query\Builder
+     * @return \Jsl\Database\Query\Builder
      */
     public function table($table);
 
@@ -17,7 +19,7 @@ interface ConnectionInterface
      * Get a new raw query expression.
      *
      * @param  mixed $value
-     * @return \Database\Query\Expression
+     * @return \Jsl\Database\Query\Expression
      */
     public function raw($value);
 
@@ -118,5 +120,4 @@ interface ConnectionInterface
      * @return array
      */
     public function pretend(Closure $callback);
-
 }

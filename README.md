@@ -1,9 +1,5 @@
 ## Database
 
-[![Build Status](https://travis-ci.org/mrjgreen/database.svg?branch=master)](https://travis-ci.org/mrjgreen/database)
-[![Coverage Status](https://img.shields.io/coveralls/mrjgreen/database.svg)](https://coveralls.io/r/mrjgreen/database)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/4a157949-f3dd-46a4-958c-b4c02ec836b3/mini.png)](https://insight.sensiolabs.com/projects/4a157949-f3dd-46a4-958c-b4c02ec836b3)
-
 The Database component is a framework agnostic PHP database abstraction layer, providing an expressive query builder. It currently supports MySQL, Postgres, SQL Server, and SQLite.
 
 Features:
@@ -95,6 +91,7 @@ $connection->query("SELECT id, username FROM customers");
  - [Raw Expressions](#raw-expressions)
  - [Get SQL](#get-sql-query-and-bindings)
  - [Raw PDO Instance](#raw-pdo-instance)
+ - [Credits](#credits)
 
 ## Connection
 The Database component supports MySQL, SQLite, SqlServer and PostgreSQL drivers. You can specify the driver during connection and the associated configuration when creating a new connection. You can also create multiple connections, but you can use alias for only one connection at a time.;
@@ -107,10 +104,11 @@ $factory = new \Database\Connectors\ConnectionFactory();
 $connection = $factory->make(array(
     'driver'    => 'mysql',
     'host'      => 'localhost',
+    'database'  => 'database', // Optional
     'username'  => 'root',
     'password'  => 'password',
-    'charset'   => 'utf8',
-    'collation' => 'utf8_unicode_ci',
+    'charset'   => 'utf8mb4', // Optional: default value if omitted
+    'collation' => 'utf8mb4_unicode_ci', // Optional: default value if omitted
 ));
 
 $connection->fetchAll("SELECT id, username FROM customers"); 
@@ -133,7 +131,7 @@ $connection = $factory->make(array(
 ));
 ```
 
-###Default Connection Options
+### Default Connection Options
 By default the following PDO attributes will be set on connection. You can override these or add to them in the
 `options` array parameter in the connection config.
 
@@ -157,16 +155,16 @@ $resolver = new Database\ConnectionResolver(array(
         'host'      => 'localhost',
         'username'  => 'root',
         'password'  => 'password',
-        'charset'   => 'utf8',
-        'collation' => 'utf8_unicode_ci',
+        'charset'   => 'utf8mb4',
+        'collation' => 'utf8mb4_unicode_ci',
     ),
     'archive' => array(
         'driver'    => 'mysql',
         'host'      => '1.2.3.456',
         'username'  => 'root',
         'password'  => 'password',
-        'charset'   => 'utf8',
-        'collation' => 'utf8_unicode_ci',
+        'charset'   => 'utf8mb4',
+        'collation' => 'utf8mb4_unicode_ci',
     ),
 ));
 
@@ -191,7 +189,7 @@ $resolver->setDefaultConnection('local');
 $resolver->connection();
 ```
 
-##Raw Queries
+## Raw Queries
 Perform a query, with bindings and return the PDOStatement object
 ```PHP
 $statement = $connection->query('SELECT * FROM users WHERE name = ?', array('John Smith'));
@@ -201,7 +199,7 @@ $statement->rowCount();
 $statement->fetchAll();
 ```
 
-###Query Shortcuts
+### Query Shortcuts
 ```PHP
 $firstRow = $connection->fetch('SELECT * FROM users WHERE name = ?', array('John Smith'));
 
@@ -211,27 +209,27 @@ $firstColumnFirstRow = $connection->fetchOne('SELECT COUNT(*) FROM users WHERE n
 ```
 
 
-##Query Builder
+## Query Builder
 
-###Selects
+### Selects
 
-####Get PDOStatement
+#### Get PDOStatement
 If you intend to iterate through the rows, it may be more efficient to get the PDOStatement
 ```PHP
 $rows = $connection->table('users')->query();
 ```
 
-####Get All
+#### Get All
 ```PHP
 $rows = $connection->table('users')->get();
 ```
 
-####Get First Row
+#### Get First Row
 ```PHP
 $row = $connection->table('users')->first();
 ```
 
-####Find By ID
+#### Find By ID
 ```PHP
 $row = $connection->table('users')->find(6);
 ```
@@ -241,17 +239,17 @@ The query above assumes your table's primary key is `'id'` and you want to retre
 $connection->table('users')->find(3, array('user_id', 'name', 'email'), 'user_id');
 ```
 
-####Select Columns
+#### Select Columns
 ```PHP
 $rows = $connection->table('users')->select('name')->addSelect('age', 'dob')->get();
 ```
 
-####Limit and Offset
+#### Limit and Offset
 ```PHP
 $connection->table('users')->offset(100)->limit(10);
 ```
 
-####Where
+#### Where
 
 ```PHP
 $connection->table('user')
@@ -262,7 +260,7 @@ $connection->table('user')
     ->get();
 ```
 
-#####Grouped Where
+##### Grouped Where
 
 ```PHP
 $connection->table('users')
@@ -277,7 +275,7 @@ $connection->table('users')
 SELECT * FROM `users` WHERE `age` > 10 or (`age` > 1 and `animal` = 'dog')`.
 ```
 
-####Group By, Order By and Having
+#### Group By, Order By and Having
 ```PHP
 $users = $connection->table('users')
                     ->orderBy('name', 'desc')
@@ -309,7 +307,7 @@ If you need more than one criterion to join a table then you can pass a closure 
     })
 ```
 
-####Sub Selects
+#### Sub Selects
 
 ```PHP
 $query = $connection->table('users')
@@ -325,34 +323,34 @@ This will produce a query like this:
 
     SELECT (SELECT `name` FROM `customer` WHERE `id` = users.id) as `tmp` FROM `users`
 
-####Aggregates
+#### Aggregates
 
-#####Count
+##### Count
 ```PHP
 $count = $connection->table('users')->count();
 ```
 
-#####Min
+##### Min
 ```PHP
 $count = $connection->table('users')->min('age');
 ```
 
-#####Max
+##### Max
 ```PHP
 $count = $connection->table('users')->max('age');
 ```
 
-#####Average
+##### Average
 ```PHP
 $count = $connection->table('users')->avg('age');
 ```
 
-#####Sum
+##### Sum
 ```PHP
 $count = $connection->table('users')->sum('age');
 ```
 
-####MySQL Outfile
+#### MySQL Outfile
 
 ```PHP
 $connection
@@ -368,7 +366,7 @@ $connection
 	})->query();
 ```
 
-###Insert
+### Insert
 ```PHP
 $data = array(
     'username' = 'jsmith',
@@ -380,7 +378,7 @@ $connection->table('users')->insert($data);
 `->insertGetId($data)` method returns the insert id instead of a PDOStatement
 ```
 
-###Insert Ignore
+### Insert Ignore
 Ignore errors from any rows inserted with a duplicate unique key
 ```PHP
 $data = array(
@@ -390,7 +388,7 @@ $data = array(
 $connection->table('users')->insertIgnore($data);
 ```
 
-###Replace
+### Replace
 Replace existing rows with a matching unique key
 ```PHP
 $data = array(
@@ -400,7 +398,7 @@ $data = array(
 $connection->table('users')->replace($data);
 ```
 
-####Batch Insert
+#### Batch Insert
 The query builder will intelligently handle multiple insert rows:
 ```PHP
 $data = array(
@@ -418,7 +416,7 @@ $connection->table('users')->insert($data);
 
 You can also pass bulk inserts to replace() and insertIgnore()
 
-###On Duplicate Key Update
+### On Duplicate Key Update
 ```PHP
 $data = array(
     'username' = 'jsmith',
@@ -435,7 +433,7 @@ $connection->table('users')->insertUpdate(
 //insertOnDuplicateKeyUpdate() is an alias of insertUpdate
 ```
 
-####Insert Select
+#### Insert Select
 $connection->table('users')->insertSelect(function($select){
     $select->from('admin')
             ->select('name', 'email')
@@ -445,7 +443,7 @@ $connection->table('users')->insertSelect(function($select){
 
 `insertIgnoreSelect` and `replaceSelect` methods are supported for the MySQL grammar driver.
 
-####Buffered Iterator Insert
+#### Buffered Iterator Insert
 If you have a large data set you can insert in batches of a chosen size (insert ignore/replace/on duplicate key update supported).
 
 This is especially useful if you want to select large data-sets from one server and insert into another.
@@ -457,7 +455,7 @@ $pdoStatement = $mainServer->table('users')->query(); // Returns a PDOStatement 
 $backupServer->table('users')->buffer(1000)->insertIgnore($pdoStatement);
 ~~~
 
-###Update
+### Update
 ```PHP
 $data = array(
     'username' = 'jsmith123',
@@ -467,14 +465,14 @@ $data = array(
 $connection->table('users')->where('id', 123)->update($data);
 ```
 
-###Delete
+### Delete
 ```PHP
 $connection->table('users')->where('last_active', '>', 12)->delete();
 ```
 
 Will delete all the rows where id is greater than 5.
 
-###Raw Expressions
+### Raw Expressions
 
 Wrap raw queries with `$connection->raw()` to bypass query parameter binding. NB use with caution - no sanitisation will take place.
 ```PHP
@@ -484,7 +482,7 @@ $connection->table('users')
             ->get();
 ```
 
-###Get SQL Query and Bindings
+### Get SQL Query and Bindings
 
 ```PHP
 $query = $connection->table('users')->find(1)->toSql();
@@ -496,7 +494,10 @@ $query->getBindings();
 ```
    
 
-###Raw PDO Instance
+### Raw PDO Instance
 ```PHP
 $connection->getPdo();
 ```
+
+## Credits
+This is a fork of [mrjgreen/database](https://github.com/mrjgreen/database)

@@ -1,4 +1,6 @@
-<?php namespace Database;
+<?php
+
+namespace Jsl\Database;
 
 use Psr\Log\AbstractLogger;
 

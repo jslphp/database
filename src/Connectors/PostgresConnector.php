@@ -1,4 +1,6 @@
-<?php namespace Database\Connectors;
+<?php
+
+namespace Jsl\Database\Connectors;
 
 use PDO;
 
@@ -34,7 +36,7 @@ class PostgresConnector extends Connector implements ConnectorInterface
 
         $connection = $this->createConnection($dsn, $config, $options);
 
-        $charset = $config['charset'];
+        $charset = $config['charset'] ?? 'utf8';
 
         $connection->prepare("set names '$charset'")->execute();
 
@@ -83,5 +85,4 @@ class PostgresConnector extends Connector implements ConnectorInterface
 
         return $dsn;
     }
-
 }

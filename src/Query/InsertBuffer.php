@@ -1,4 +1,6 @@
-<?php namespace Database\Query;
+<?php
+
+namespace Jsl\Database\Query;
 
 use Traversable;
 use Closure;
@@ -8,7 +10,7 @@ class InsertBuffer
     /**
      * The database connection instance.
      *
-     * @var \Database\Query\Builder
+     * @var \Jsl\Database\Query\Builder
      */
     protected $builder;
 
@@ -71,7 +73,7 @@ class InsertBuffer
     {
         $inserts = 0;
 
-        $this->buffer($values, function(array $buffer) use($type, &$inserts){
+        $this->buffer($values, function (array $buffer) use ($type, &$inserts) {
             $inserts += $this->builder->doInsert($buffer, $type)->rowCount();
         });
 
@@ -89,7 +91,7 @@ class InsertBuffer
     {
         $upserts = 0;
 
-        $this->buffer($values, function(array $buffer) use($updateValues, &$upserts){
+        $this->buffer($values, function (array $buffer) use ($updateValues, &$upserts) {
             $upserts += $this->builder->insertUpdate($buffer, $updateValues)->rowCount();
         });
 
@@ -120,12 +122,10 @@ class InsertBuffer
         $size = 0;
         $buffer = array();
 
-        foreach($values as $row)
-        {
+        foreach ($values as $row) {
             $buffer[] = $row;
 
-            if(++$size >= $this->chunkSize)
-            {
+            if (++$size >= $this->chunkSize) {
                 $callback($buffer);
 
                 $buffer = array();
@@ -134,8 +134,7 @@ class InsertBuffer
         }
 
         // Insert the remainder
-        if($size)
-        {
+        if ($size) {
             $callback($buffer);
         }
     }

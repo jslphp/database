@@ -1,4 +1,6 @@
-<?php namespace Database\Query;
+<?php
+
+namespace Jsl\Database\Query;
 
 class Expression
 {
@@ -40,5 +42,4 @@ class Expression
     {
         return (string)$this->getValue();
     }
-
 }

@@ -1,12 +1,14 @@
-<?php namespace Database\Connectors;
+<?php
 
-use Database\Connection;
-use Database\Exception\ExceptionHandler;
-use Database\Query\Grammars\MySqlGrammar;
-use Database\Query\Grammars\PostgresGrammar;
-use Database\Query\Grammars\SqlServerGrammar;
-use Database\Query\Grammars\SQLiteGrammar;
-use Database\QueryLogger;
+namespace Jsl\Database\Connectors;
+
+use Jsl\Database\Connection;
+use Jsl\Database\Exception\ExceptionHandler;
+use Jsl\Database\Query\Grammars\MySqlGrammar;
+use Jsl\Database\Query\Grammars\PostgresGrammar;
+use Jsl\Database\Query\Grammars\SqlServerGrammar;
+use Jsl\Database\Query\Grammars\SQLiteGrammar;
+use Jsl\Database\QueryLogger;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -66,7 +68,7 @@ class ConnectionFactory implements ConnectionFactoryInterface
      * Establish a PDO connection based on the configuration.
      *
      * @param  array $config
-     * @return \Database\Connection
+     * @return \Jsl\Database\Connection
      */
     public function make(array $config)
     {
@@ -86,7 +88,7 @@ class ConnectionFactory implements ConnectionFactoryInterface
      *
      * @param array $config
      * @param bool $lazy
-     * @return \Database\Connection
+     * @return \Jsl\Database\Connection
      */
     protected function makeConnection(array $config, $lazy)
     {
@@ -102,7 +104,7 @@ class ConnectionFactory implements ConnectionFactoryInterface
      *
      * @param  array $config
      * @param  bool $lazy
-     * @return \Database\Connection
+     * @return \Jsl\Database\Connection
      */
     protected function createSingleConnection(array $config, $lazy)
     {
@@ -114,8 +116,7 @@ class ConnectionFactory implements ConnectionFactoryInterface
             ->setTablePrefix(isset($config['prefix']) ? $config['prefix'] : '')
             ->setLogger($this->logger);
 
-        if(!$lazy)
-        {
+        if (!$lazy) {
             $connection->setPdo($this->createConnector($config['driver'])->connect($config));
         }
 
@@ -124,7 +125,7 @@ class ConnectionFactory implements ConnectionFactoryInterface
 
 
     /**
-     * @return \Database\Connection
+     * @return \Jsl\Database\Connection
      */
     protected function createConnection()
     {
@@ -135,14 +136,13 @@ class ConnectionFactory implements ConnectionFactoryInterface
      * Create a single database connection instance.
      *
      * @param  array $config
-     * @return \Database\Connection
+     * @return \Jsl\Database\Connection
      */
     protected function createReadWriteConnection(array $config, $lazy)
     {
         $connection = $this->createSingleConnection($this->getWriteConfig($config), $lazy);
 
-        if(!$lazy)
-        {
+        if (!$lazy) {
             $connection->setReadPdo($this->createReadPdo($config));
         }
 
@@ -220,7 +220,7 @@ class ConnectionFactory implements ConnectionFactoryInterface
      * Create a connector instance based on the configuration.
      *
      * @param  string $driver
-     * @return \Database\Connectors\ConnectorInterface
+     * @return \Jsl\Database\Connectors\ConnectorInterface
      *
      * @throws \InvalidArgumentException
      */

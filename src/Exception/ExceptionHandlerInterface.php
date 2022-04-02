@@ -1,6 +1,8 @@
-<?php namespace Database\Exception;
+<?php
+
+namespace Jsl\Database\Exception;
 
 interface ExceptionHandlerInterface
 {
-    public function handle($query, array $bindings = array(), \Exception $previousException);
+    public function handle($query = '', array $bindings = array(), \Exception $previousException = null);
 }

@@ -1,4 +1,6 @@
-<?php namespace Database\Connectors;
+<?php
+
+namespace Jsl\Database\Connectors;
 
 interface ConnectorInterface
 {
@@ -10,5 +12,4 @@ interface ConnectorInterface
      * @return \PDO
      */
     public function connect(array $config);
-
 }
