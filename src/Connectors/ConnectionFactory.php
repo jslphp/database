@@ -4,16 +4,16 @@ namespace Jsl\Database\Connectors;
 
 use Jsl\Database\Connection;
 use Jsl\Database\Exception\ExceptionHandler;
+use Jsl\Database\QueryLogger;
 use Jsl\Database\Query\Grammars\MySqlGrammar;
 use Jsl\Database\Query\Grammars\PostgresGrammar;
-use Jsl\Database\Query\Grammars\SqlServerGrammar;
 use Jsl\Database\Query\Grammars\SQLiteGrammar;
-use Jsl\Database\QueryLogger;
+use Jsl\Database\Query\Grammars\SqlServerGrammar;
 use Psr\Log\LoggerInterface;
 
 /**
  * Class ConnectionFactory
- * @package Database\Connectors
+ * @package Jsl\Database\Connectors
  *
  * Build a connection from a config with a format like:
  *
@@ -43,7 +43,7 @@ class ConnectionFactory implements ConnectionFactoryInterface
     /**
      * @var null|string
      */
-    protected $connectionClassName = 'Database\Connection';
+    protected $connectionClassName = 'Jsl\Database\Connection';
 
     /**
      * @var LoggerInterface

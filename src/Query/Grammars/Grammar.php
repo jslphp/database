@@ -50,7 +50,7 @@ class Grammar
     /**
      * Wrap a table in keyword identifiers.
      *
-     * @param  string $table
+     * @param  Expression|string $table
      * @return string
      */
     public function wrapTable($table)
@@ -63,7 +63,7 @@ class Grammar
     /**
      * Wrap a value in keyword identifiers.
      *
-     * @param  string $value
+     * @param  Expression|string $value
      * @return string
      */
     public function wrap($value)

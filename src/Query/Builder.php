@@ -203,6 +203,31 @@ class Builder
         return $this;
     }
 
+
+    /**
+     * Authenticate a user
+     *
+     * @param array $user [column, value]
+     * @param array $password [column, value]
+     * @param callable|null $authCallback Authentication callback. Defaults to password_verify
+     *
+     * @return array|null User on success, null on fail
+     */
+    public function authenticate(array $user, array $password, callable $authCallback = null)
+    {
+        $user = $this->where($user[0], $user[1])
+            ->first();
+
+        if ($user === null) {
+            return null;
+        }
+
+        $authCallback = $authCallback ?? fn ($user) => password_verify($password[1], $user[$password[0]]);
+
+        return call_user_func_array($authCallback, [$user, $password]) ? $user : null;
+    }
+
+
     /**
      * Add a new "raw" select expression to the query.
      *

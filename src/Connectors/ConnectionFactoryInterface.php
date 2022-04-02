@@ -4,7 +4,7 @@ namespace Jsl\Database\Connectors;
 
 /**
  * Class ConnectionFactory
- * @package Database\Connectors
+ * @package Jsl\Database\Connectors
  *
  * Build a connection from a config with a format like:
  *
