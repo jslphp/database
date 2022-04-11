@@ -24,7 +24,7 @@ The component is based on Laravel's Illuminate\Database and has very familiar sy
 ### Installation
 
 ~~~
-composer require mrjgreen/database
+composer require jsl/database
 ~~~
 
 
