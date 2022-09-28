@@ -126,10 +126,12 @@ $connection->table('customers')
 ### SQLite 
 ```PHP
 $connection = $factory->make(array(
-    'driver'    => 'sqlite',
+    'driver'   => 'sqlite',
     'database' => '/path/to/sqlite.db',
+    'create'   => true,
 ));
 ```
+PDO always creates the database if it doesn't exist. Since you won't get any notice if you've entered the wrong path, it can make debugging much harder. Using the connection option `create` let's you decide that behavior. Set it to `true` to let PDO create the database. Setting it to `false` (default) will throw an exception if the database doesn't exist.
 
 ### Default Connection Options
 By default the following PDO attributes will be set on connection. You can override these or add to them in the
