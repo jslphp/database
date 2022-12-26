@@ -3,8 +3,10 @@
 namespace Jsl\Database\Query;
 
 use Closure;
+use Exception;
 use Jsl\Database\ConnectionInterface;
 use Jsl\Database\Query\Grammars\Grammar;
+use Jsl\Database\Query\Grammars\MySqlGrammar;
 
 class Builder
 {
@@ -1196,7 +1198,11 @@ class Builder
             $builder($clause);
         }
 
-        $sql = $this->grammar->compileInfile($this, $clause);
+        if ($this->grammar instanceof MySqlGrammar) {
+            $sql = $this->grammar->compileInfile($this, $clause);
+        } else {
+            throw new Exception('inifile() is only supported for MySQL');
+        }
 
         return $this->connection->query($sql, $this->cleanBindings($clause->rules));
     }
