@@ -4,6 +4,7 @@ namespace Jsl\Database\Query;
 
 use Closure;
 use Exception;
+use Jsl\Database\Collections\Paginate;
 use Jsl\Database\ConnectionInterface;
 use Jsl\Database\Query\Grammars\Grammar;
 use Jsl\Database\Query\Grammars\MySqlGrammar;
@@ -1182,6 +1183,21 @@ class Builder
         if (is_null($this->columns)) $this->columns = $columns;
 
         return $this->connection->fetchAll($this->toSql(), $this->getBindings());
+    }
+
+    /**
+     * Execute the query and return a page
+     *
+     * @param int $page
+     * @param int $perPage
+     * @param  array $columns
+     * @return Paginate
+     */
+    public function paginate(int $page = 1, int $perPage = 20, $columns = ['*']): Paginate
+    {
+        if (is_null($this->columns)) $this->columns = $columns;
+
+        return new Paginate($this, $page, $perPage);
     }
 
     /**
