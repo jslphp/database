@@ -4,6 +4,7 @@ namespace Jsl\Database\Query;
 
 use Closure;
 use Exception;
+use Jsl\Database\Collections\Collection;
 use Jsl\Database\Collections\Paginate;
 use Jsl\Database\ConnectionInterface;
 use Jsl\Database\Query\Grammars\Grammar;
@@ -38,6 +39,40 @@ class Builder
         'having' => [],
         'order' => [],
     );
+
+    /**
+     * Used for fetchClass (if set)
+     *
+     * @var ?string
+     */
+    protected ?string $fetchClass = null;
+
+    /**
+     * Model class to use for records (data passed through constructor)
+     *
+     * @var ?string
+     */
+    protected ?string $modelClass = null;
+
+    /**
+     * Transformer to use when using model class
+     *
+     * @var object|array|string|null
+     */
+    protected object|array|string|null $modelTransformer = null;
+
+    /**
+     * @var bool
+     */
+    protected bool $returnCollection = false;
+
+    /**
+     * Some get-requests needs a default array, so set this to
+     * true while making those requests
+     *
+     * @var bool
+     */
+    protected bool $ignoreModelAndCollection = false;
 
     /**
      * An aggregate function and column to be run.
@@ -264,6 +299,59 @@ class Builder
         $column = is_array($column) ? $column : func_get_args();
 
         $this->columns = array_merge((array)$this->columns, $column);
+
+        return $this;
+    }
+
+    /**
+     * Enables FETCH_CLASS mode on the result
+     *
+     * @param string|null $className
+     *
+     * @return self
+     */
+    public function fetchClass(?string $className): self
+    {
+        $this->fetchClass = $className;
+
+        return $this;
+    }
+
+    /**
+     * Convert records to models (data injected through the constructor)
+     *
+     * @param string|null $modelName
+     * @param callable $transformer Transformer to use for the data
+     *
+     * @return self
+     */
+    public function model(?string $modelClass = null, callable $transformer = null): self
+    {
+        $this->modelClass = $modelClass;
+        $this->modelTransformer = $transformer;
+
+        return $this;
+    }
+
+    /**
+     * Get data as a collection instead of an array
+     *
+     * @param string|null $modelClass
+     * @param callable|null $transformer
+     *
+     * @return self
+     */
+    public function collection(?string $modelClass = null, callable $transformer = null): self
+    {
+        if ($modelClass !== null) {
+            $this->modelClass = $modelClass;
+        }
+
+        if ($transformer !== null) {
+            $this->modelTransformer = $transformer;
+        }
+
+        $this->returnCollection = true;
 
         return $this;
     }
@@ -1169,7 +1257,9 @@ class Builder
     {
         $results = $this->limit(1)->get($columns);
 
-        return count($results) > 0 ? reset($results) : null;
+        return is_array($results)
+            ? (count($results) > 0 ? reset($results) : null)
+            : $results->first();
     }
 
     /**
@@ -1178,11 +1268,23 @@ class Builder
      * @param  array $columns
      * @return array|static[]
      */
-    public function get($columns = array('*'))
+    public function get($columns = ['*'])
     {
         if (is_null($this->columns)) $this->columns = $columns;
 
-        return $this->connection->fetchAll($this->toSql(), $this->getBindings());
+        $result = $this->connection->fetchAll($this->toSql(), $this->getBindings(), true, $this->fetchClass);
+
+        if ($this->ignoreModelAndCollection === false && $this->modelClass) {
+            $model = $this->modelClass;
+
+            return $this->returnCollection
+                ? new Collection($result, $this->modelClass, $this->modelTransformer)
+                : array_map(fn ($record) => new $model($record, $this->modelTransformer), $result);
+        }
+
+        return $this->ignoreModelAndCollection === false && $this->returnCollection
+            ? new Collection($result)
+            : $result;
     }
 
     /**
@@ -1287,7 +1389,9 @@ class Builder
         // First we will just get all of the column values for the record result set
         // then we can associate those values with the column if it was specified
         // otherwise we can just give these values back without a specific key.
+        $this->ignoreModelAndCollection = true;
         $results = $this->get($columns);
+        $this->ignoreModelAndCollection = false;
 
         $values = array_map(function ($row) use ($columns) {
             return $row[$columns[0]];
@@ -1473,7 +1577,9 @@ class Builder
 
         $previousColumns = $this->columns;
 
+        $this->ignoreModelAndCollection = true;
         $results = $this->get($columns);
+        $this->ignoreModelAndCollection = false;
 
         // Once we have executed the query, we will reset the aggregate property so
         // that more select queries can be executed against the database without

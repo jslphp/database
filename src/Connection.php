@@ -203,11 +203,16 @@ class Connection implements ConnectionInterface
      * @param  string $query
      * @param  array $bindings
      * @param  bool $useReadPdo
+     * @param  ?string $fetchClass
      * @return array
      */
-    public function fetch($query, array $bindings = array(), $useReadPdo = true)
+    public function fetch($query, array $bindings = array(), $useReadPdo = true, ?string $fetchClass = null)
     {
-        return $this->run($query, $bindings, $useReadPdo)->fetch($this->getFetchMode());
+        $stmt = $this->run($query, $bindings, $useReadPdo);
+
+        return $fetchClass
+            ? $stmt->fetch(PDO::FETCH_CLASS, $fetchClass)
+            : $stmt->fetch($this->getFetchMode());
     }
 
     /**
@@ -229,11 +234,16 @@ class Connection implements ConnectionInterface
      * @param  string $query
      * @param  array $bindings
      * @param  bool $useReadPdo
+     * @param  ?string $fetchClass
      * @return array
      */
-    public function fetchAll($query, array $bindings = array(), $useReadPdo = true)
+    public function fetchAll($query, array $bindings = array(), $useReadPdo = true, ?string $fetchClass = null)
     {
-        return $this->run($query, $bindings, $useReadPdo)->fetchAll($this->getFetchMode());
+        $stmt = $this->run($query, $bindings, $useReadPdo);
+
+        return $fetchClass
+            ? $stmt->fetchAll(PDO::FETCH_CLASS, $fetchClass)
+            : $stmt->fetchAll($this->getFetchMode());
     }
 
     /**
